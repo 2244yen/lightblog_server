@@ -32,7 +32,7 @@ cloudinary.config({
 // Connect mongoDB
 mongoose.set('debug', true)
 mongoose.Promise = global.Promise
-const uri = "mongodb+srv://linhdang:0yICd4OZXIeFSsji@cluster0-wrwld.mongodb.net/lightblogDB?retryWrites=true"
+const uri = process.ENV.PROD_MONGODB || "mongodb+srv://linhdang:0yICd4OZXIeFSsji@cluster0-wrwld.mongodb.net/lightblogDB?retryWrites=true"
 const serverOptions = {
   useNewUrlParser: true,
   useCreateIndex: true,
