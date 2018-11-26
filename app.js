@@ -7,11 +7,11 @@ const mongoose = require('mongoose')
 const cloudinary = require('cloudinary')
 const helmet = require('helmet')
 const app = express()
-// const articleRouter = require('./routes/article')
-// const userRouter = require('./routes/user')
 const apiRoutes = require('./routes/api')
+const config = require('dotenv').config()
 const isProduction = process.env.NODE_ENV === 'production'
 
+app.set('port', (process.env.PORT || 8000));
 app.use(cors())
 app.use(require('morgan')('dev'))
 app.use(bodyParser.json())
@@ -32,7 +32,7 @@ cloudinary.config({
 // Connect mongoDB
 mongoose.set('debug', true)
 mongoose.Promise = global.Promise
-const uri = process.ENV.PROD_MONGODB || "mongodb+srv://linhdang:0yICd4OZXIeFSsji@cluster0-wrwld.mongodb.net/lightblogDB?retryWrites=true"
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_SERVER}`
 const serverOptions = {
   useNewUrlParser: true,
   useCreateIndex: true,
