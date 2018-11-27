@@ -8,7 +8,6 @@ const cloudinary = require('cloudinary')
 const helmet = require('helmet')
 const app = express()
 const apiRoutes = require('./routes/api')
-const config = require('dotenv').config()
 const isProduction = process.env.NODE_ENV === 'production'
 
 app.set('port', (process.env.PORT || 8000));
@@ -20,6 +19,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 if(!isProduction) {
   app.use(errorHandler())
+  require('dotenv').config()
 }
 
 // Cloudinary
@@ -32,23 +32,33 @@ cloudinary.config({
 // Connect mongoDB
 mongoose.set('debug', true)
 mongoose.Promise = global.Promise
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_SERVER}`
-const serverOptions = {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  keepAlive: true,
-  reconnectTries: Number.MAX_VALUE,
-  bufferMaxEntries: 0
-}
+// const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_SERVER}`
+// const serverOptions = {
+//   useNewUrlParser: true,
+//   useCreateIndex: true,
+//   keepAlive: true,
+//   reconnectTries: Number.MAX_VALUE,
+//   bufferMaxEntries: 0
+// }
 
-mongoose.connect(uri, serverOptions)
-.then(() => {
-  console.log('Database connection successful')
-})
-.catch(err => {
-  console.error(err)
-})
+// mongoose.connect(uri, serverOptions)
+// .then(() => {
+//   console.log('Database connection successful')
+// })
+// .catch(err => {
+//   console.error(err)
+// })
 
+app.use((req, res, next) => {
+  if (mongoose.connection.readyState) {
+    console.log('ready')
+    next()
+  } else {
+    console.log("else (mongoose.connection.readyState)");
+    require("./mongo")().then(() => next());
+    console.log("else (mongoose.connection.readyState)");
+  }
+})
 // Add routes
 app.get('/', (req, res, next) => {
   res.send('home')

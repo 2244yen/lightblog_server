@@ -1,0 +1,13 @@
+{
+  "development": {
+    "database": "lightblogDB",
+    "host": "localhost"
+  },
+  "test": {
+    "database": "lightblogDB",
+    "host": "localhost"
+  },
+  "production": {
+    "use_env_variable": "MONGO_URI"
+  }
+}
