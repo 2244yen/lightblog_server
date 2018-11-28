@@ -8,7 +8,7 @@ const cloudinary = require('cloudinary')
 const helmet = require('helmet')
 const app = express()
 const apiRoutes = require('./routes/api')
-const isProduction = process.env.NODE_ENV === 'production'
+// const isProduction = process.env.NODE_ENV === 'production'
 
 app.set('port', (process.env.PORT || 8000));
 app.use(cors())
@@ -17,7 +17,7 @@ app.use(bodyParser.json())
 app.use(helmet())
 app.use(express.static(path.join(__dirname, 'public')))
 
-if(!isProduction) {
+if(app.get('env') === 'development') {
   app.use(errorHandler())
   require('dotenv').config()
 }
@@ -48,8 +48,8 @@ mongoose.Promise = global.Promise
 // .catch(err => {
 //   console.error(err)
 // })
-
 app.use((req, res, next) => {
+  console.log('res')
   if (mongoose.connection.readyState) {
     console.log('ready')
     next()
