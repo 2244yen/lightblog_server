@@ -1,10 +1,10 @@
 {
   "development": {
-    "database": "lightblogDB",
+    "database": "MONGOLAB_RED_URI",
     "host": "localhost"
   },
   "test": {
-    "database": "lightblogDB",
+    "database": "MONGOLAB_RED_URI",
     "host": "localhost"
   },
   "production": {

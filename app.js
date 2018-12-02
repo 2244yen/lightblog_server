@@ -32,39 +32,23 @@ cloudinary.config({
 // Connect mongoDB
 mongoose.set('debug', true)
 mongoose.Promise = global.Promise
-// const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_SERVER}`
-// const serverOptions = {
-//   useNewUrlParser: true,
-//   useCreateIndex: true,
-//   keepAlive: true,
-//   reconnectTries: Number.MAX_VALUE,
-//   bufferMaxEntries: 0
-// }
-
-// mongoose.connect(uri, serverOptions)
-// .then(() => {
-//   console.log('Database connection successful')
-// })
-// .catch(err => {
-//   console.error(err)
-// })
 app.use((req, res, next) => {
-  console.log('res')
-  if (mongoose.connection.readyState) {
-    console.log('ready')
-    next()
-  } else {
-    console.log("else (mongoose.connection.readyState)");
-    require("./mongo")().then(() => next());
-    console.log("else (mongoose.connection.readyState)");
-  }
+  // if (mongoose.connection.readyState) {
+  //   console.log('ready')
+  //   next()
+  // } else {
+  //   require("./mongo")().then(() => next());
+  //   console.log("else (mongoose.connection.readyState)");
+  // }
+  require("./mongo")().then(() => next());
+  console.log("else (mongoose.connection.readyState)");
 })
+
 // Add routes
 app.get('/', (req, res, next) => {
   res.send('home')
 })
-// app.use('/user', userRouter)
-// app.use('/article', articleRouter)
+
 app.use('/api', apiRoutes)
 
 app.use((req, res, next) => {
@@ -72,19 +56,6 @@ app.use((req, res, next) => {
   err.status = 404;
   next(err)
 })
-
-if (!isProduction) {
-  app.use((err, req, res) => {
-    res.status(err.status || 500)
-
-    res.json({
-      errors: {
-        message: err.message,
-        error: err,
-      }
-    })
-  })
-}
 
 app.use((err, req, res) => {
   res.status(err.status || 500)
@@ -97,7 +68,6 @@ app.use((err, req, res) => {
   })
 })
 
-// const server = app.listen(8000, () => console.log('Server started on http://localhost:8000'))
-// server.timeout = 1000
+app.listen(app.get('port'), () => console.log('Server started on http://localhost:8000'))
 
 module.exports = app

@@ -46,6 +46,7 @@ module.exports = {
   getTags: (req, res, next) => {
     const query = Article.find()
     query.exec(function (err, data) {
+      console.log('tags', err)
       if (err) { 
         res.status(404).json({"error": "not found","err": err})
         return

@@ -1,14 +1,19 @@
 const mongoose = require('mongoose');
-const env = proccess.env.NODE_ENV || 'development';
+const env = process.env.NODE_ENV || 'development';
 const config = require('./config/mongo')[env];
-console.log(config)
 
 module.exports = () => {
-  var envUrl = proccess.env[config.use_env_variable]
+  var envUrl = process.env[config.use_env_variable]
   var localUrl = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_SERVER}`
   var mongoUrl = envUrl ? envUrl : localUrl
-  console.log(mongoUrl)
-  return mongoose.connect(mongoUrl)
+  const serverOptions = {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    keepAlive: true,
+    reconnectTries: Number.MAX_VALUE,
+    bufferMaxEntries: 0
+  }
+  return mongoose.connect(mongoUrl, serverOptions)
   .then(() => {
     console.log('Database connection successful')
   })
