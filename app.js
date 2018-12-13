@@ -42,7 +42,6 @@ app.use((req, res, next) => {
   //   console.log("else (mongoose.connection.readyState)");
   // }
   require("./mongo")().then(() => next());
-  console.log("else (mongoose.connection.readyState)");
 })
 
 // Add routes
