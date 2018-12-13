@@ -19,6 +19,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 if(app.get('env') === 'development') {
   app.use(errorHandler())
+  // add them property to process.env tu .env
   require('dotenv').config()
 }
 
