@@ -1,10 +1,10 @@
 {
   "development": {
-    "database": "MONGOLAB_RED_URI",
+    "database": "MONGODB_URI",
     "host": "localhost"
   },
   "test": {
-    "database": "MONGOLAB_RED_URI",
+    "database": "MONGODB_ATLAS",
     "host": "localhost"
   },
   "production": {
