@@ -8,14 +8,17 @@ const cloudinary = require('cloudinary')
 module.exports = {
   create: (req, res, next) => {
     let { body } = req
+    body.tags = JSON.parse(body.tags)
     if (req.files.thumbnail) {
       cloudinary.uploader.upload(req.files.thumbnail.path, (result) => {
         body.thumbnail = result.url || ''
+        saveArticle(body)
       },{
         resource_type: 'image'
       })
+    } else {
+      saveArticle(body) 
     }
-    saveArticle(body)
     function saveArticle (obj) {
       new Article(obj).save((err, article) => {
         if (err)
